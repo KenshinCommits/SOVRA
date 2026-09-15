@@ -3,6 +3,7 @@ import axios from 'axios'
 import KnowledgeBasePanel from './components/KnowledgeBasePanel'
 import SearchTestPanel from './components/SearchTestPanel'
 import ModelsTestPanel from './components/ModelsTestPanel'
+import AgentWorkspacePanel from './components/AgentWorkspacePanel'
 
 interface SystemStatus {
   ollama_connected: boolean;
@@ -14,6 +15,7 @@ function App() {
   const [status, setStatus] = useState<SystemStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('agent');
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -46,8 +48,29 @@ function App() {
         </div>
       </header>
 
-      <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+      {/* Tabs */}
+      <div className="flex space-x-4 mb-6">
+        <button 
+          onClick={() => setActiveTab('agent')}
+          className={`px-4 py-2 rounded font-bold tracking-wider ${activeTab === 'agent' ? 'bg-orange-600 text-white' : 'bg-industrial-panel text-gray-400 hover:text-white'}`}
+        >
+          AGENT WORKSPACE
+        </button>
+        <button 
+          onClick={() => setActiveTab('knowledge')}
+          className={`px-4 py-2 rounded font-bold tracking-wider ${activeTab === 'knowledge' ? 'bg-orange-600 text-white' : 'bg-industrial-panel text-gray-400 hover:text-white'}`}
+        >
+          KNOWLEDGE BASE
+        </button>
+        <button 
+          onClick={() => setActiveTab('models')}
+          className={`px-4 py-2 rounded font-bold tracking-wider ${activeTab === 'models' ? 'bg-orange-600 text-white' : 'bg-industrial-panel text-gray-400 hover:text-white'}`}
+        >
+          MODELS
+        </button>
+      </div>
+
+      <main className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Column: System Status */}
         <div className="col-span-1 space-y-6">
           <div className="bg-industrial-panel p-6 rounded-xl border border-industrial-border shadow-lg">
@@ -77,19 +100,20 @@ function App() {
           </div>
         </div>
 
-        {/* Right Column: Knowledge Base */}
-        <div className="col-span-1 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <KnowledgeBasePanel />
-          <div className="flex flex-col gap-6">
-            <SearchTestPanel />
-            <ModelsTestPanel />
-          </div>
+        {/* Right Column: Dynamic Content */}
+        <div className="col-span-1 lg:col-span-3">
+          {activeTab === 'agent' && <AgentWorkspacePanel />}
+          {activeTab === 'knowledge' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <KnowledgeBasePanel />
+              <SearchTestPanel />
+            </div>
+          )}
+          {activeTab === 'models' && <ModelsTestPanel />}
         </div>
-
       </main>
     </div>
   )
 }
 
 export default App
-

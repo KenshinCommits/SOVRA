@@ -4,6 +4,18 @@ All notable changes to the SOVRA project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-15
+
+### Added
+- **Agent Orchestrator:** Implemented a full ReAct loop orchestrator (`PLAN -> ACT -> OBSERVE -> VERIFY`).
+- **Task State Tracking:** Introduced detailed history tracking via `AgentTask` and `AgentStep` models.
+- **Tool Registry:** Created a modular tool registry with initial built-ins (`knowledge_search`, `list_project_files`, `read_file`).
+- **Security:** Path traversal prevention applied to file system tools.
+- **API:** New `POST /agent/tasks` and `GET /agent/tasks/{task_id}` polling endpoints for asynchronous agent operation.
+- **Frontend:** Built `AgentWorkspacePanel.tsx` and refactored UI into a tabbed layout to seamlessly view real-time agent execution traces.
+
+## [0.3.0] - 2026-09-15
+
 ### Added
 - **Phase 3 (Model Layer & Router)**: 
   - Abstract `ModelProvider` and `OllamaModelProvider`.

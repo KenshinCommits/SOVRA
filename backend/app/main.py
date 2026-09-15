@@ -19,9 +19,11 @@ app.add_middleware(
 
 from backend.api.router_knowledge import router as knowledge_router
 from backend.api.router_models import router as models_router
+from backend.api.router_agent import router as agent_router
 
 app.include_router(knowledge_router, tags=["Knowledge"])
 app.include_router(models_router, tags=["Models"])
+app.include_router(agent_router, tags=["Agent"])
 
 
 class SystemStatus(BaseModel):

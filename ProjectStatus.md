@@ -1,14 +1,15 @@
 # Current Status
 
 - **Project:** SOVRA
-- **Current phase:** Phase 4 (Agent Core)
-- **Overall status:** Phase 1, 2, and 3 Complete
+- **Current phase:** Phase 5 (Sandbox)
+- **Overall status:** Phase 1, 2, 3, and 4 Complete
 - **Last updated:** 2026-09-15
 
 ## Completed
 - **Phase 1:** Architecture & Setup
 - **Phase 2:** Knowledge Base / Qdrant / RAG (MVP Verified)
 - **Phase 3:** Model Layer + Model Router (MVP Verified)
+- **Phase 4:** Agent Core + Tool Registry (MVP Verified)
 
 ## Current architecture
 A FastAPI backend serving a React frontend. The backend handles local document ingestion, chunks text, embeds via `sentence-transformers`, stores in a local Docker Qdrant DB. A Model Router takes prompts, fingerprints the task via a lightweight LLM, and dynamically routes requests to the optimal local Ollama model.

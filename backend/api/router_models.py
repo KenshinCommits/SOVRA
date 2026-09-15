@@ -2,15 +2,13 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional, Any
 from backend.models.registry import get_model_registry, ModelMetadata
-from backend.models.provider import OllamaModelProvider
+from backend.models.provider import model_provider
 from backend.models.router import ModelRouter, RouterDecision
 
 router = APIRouter(prefix="/models")
 
-# We create singletons for the provider and router
 # In a full app, these might be injected via dependencies
-provider = OllamaModelProvider()
-model_router = ModelRouter(provider)
+model_router = ModelRouter(model_provider)
 
 class RouteRequest(BaseModel):
     prompt: str
@@ -57,7 +55,7 @@ async def generate(req: GenerateRequest):
             fingerprint = decision.task_fingerprint.dict()
 
         # 2. Generate response
-        response_text = await provider.generate_text(
+        response_text = await model_provider.generate_text(
             model_name=selected_model,
             prompt=req.prompt,
             system=req.system,
