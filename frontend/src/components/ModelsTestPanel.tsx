@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Cpu, Loader2, ChevronRight } from 'lucide-react';
 
 export default function ModelsTestPanel() {
   const [models, setModels] = useState<any[]>([]);
@@ -49,62 +50,92 @@ export default function ModelsTestPanel() {
   };
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 text-gray-100">
-      <h2 className="text-xl font-bold mb-4 text-purple-400">Model Router & Test</h2>
+    <div className="bg-industrial-surface border border-industrial-border rounded-sm p-5">
+      <h2 className="text-sm font-display font-bold text-white uppercase tracking-wide mb-4 pb-2 border-b border-industrial-border">
+        Model Router & Test
+      </h2>
       
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Registered Models</h3>
-        <div className="flex flex-wrap gap-2">
+      {/* Registered models */}
+      <div className="mb-5">
+        <h3 className="text-[10px] font-mono text-gray-600 uppercase tracking-widest mb-2">Registered Models</h3>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-1.5">
           {models.map(m => (
-            <span key={m.name} className="px-2 py-1 bg-gray-700 rounded text-xs" title={m.capabilities.description}>
-              {m.name} ({m.capabilities.modality})
-            </span>
+            <div
+              key={m.name}
+              className="flex items-center gap-2 bg-industrial-base border border-industrial-border rounded-sm px-2.5 py-1.5 text-[11px] hover:border-gray-500 transition-colors"
+              title={m.capabilities.description}
+            >
+              <Cpu className="w-3 h-3 text-gray-600 shrink-0" />
+              <span className="font-mono text-gray-300 truncate">{m.name}</span>
+              <span className="text-[9px] text-gray-600 ml-auto shrink-0">{m.capabilities.modality}</span>
+            </div>
           ))}
         </div>
       </div>
 
+      {/* Prompt */}
       <textarea
-        className="w-full bg-gray-900 border border-gray-600 rounded p-3 text-sm focus:outline-none focus:border-purple-500 mb-3"
-        rows={4}
-        placeholder="Enter a prompt to test routing..."
+        className="w-full bg-industrial-base border border-industrial-border rounded-sm p-3 text-sm text-gray-200 placeholder-gray-600 focus:border-industrial-accent transition-colors mb-3 resize-none"
+        rows={3}
+        placeholder="Enter a prompt to test routing…"
         value={prompt}
         onChange={e => setPrompt(e.target.value)}
       />
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-2 mb-5">
         <button
           onClick={handleRouteTest}
           disabled={loading || !prompt.trim()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded font-medium disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-2 bg-industrial-base border border-industrial-border hover:border-industrial-accent text-xs font-mono uppercase text-gray-300 rounded-sm disabled:opacity-40 transition-colors"
         >
-          Test Route Only
+          <ChevronRight className="w-3 h-3" />
+          Route Only
         </button>
         <button
           onClick={handleGenerateTest}
           disabled={loading || !prompt.trim()}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded font-medium disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3 py-2 bg-industrial-accent hover:bg-industrial-accent-hover text-black text-xs font-mono font-bold uppercase rounded-sm disabled:opacity-40 transition-colors"
         >
+          {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : <ChevronRight className="w-3 h-3" />}
           Route & Generate
         </button>
       </div>
 
+      {/* Route result */}
       {routeResult && (
-        <div className="bg-gray-900 p-4 rounded text-sm mb-4">
-          <h3 className="font-bold text-blue-400 mb-2">Routing Decision</h3>
-          <p><strong>Selected:</strong> {routeResult.selected_model}</p>
-          <p><strong>Reason:</strong> {routeResult.reason}</p>
-          <div className="mt-2 text-xs text-gray-400">
-            <p>Fingerprint: {JSON.stringify(routeResult.task_fingerprint)}</p>
+        <div className="bg-industrial-base border border-industrial-border rounded-sm p-3 mb-3">
+          <h3 className="text-[10px] font-mono text-sky-500 uppercase tracking-wider mb-2">Routing Decision</h3>
+          <div className="text-[12px] space-y-1">
+            <div className="flex gap-2">
+              <span className="text-gray-600 font-mono">Selected:</span>
+              <span className="text-white font-mono font-medium">{routeResult.selected_model}</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="text-gray-600 font-mono">Reason:</span>
+              <span className="text-gray-400">{routeResult.reason}</span>
+            </div>
+            <div className="mt-1.5 text-[10px] text-gray-600 font-mono">
+              Fingerprint: {JSON.stringify(routeResult.task_fingerprint)}
+            </div>
           </div>
         </div>
       )}
 
+      {/* Gen result */}
       {genResult && (
-        <div className="bg-gray-900 p-4 rounded text-sm">
-          <h3 className="font-bold text-green-400 mb-2">Generation Result</h3>
-          <p className="mb-2"><strong className="text-gray-300">Model Used:</strong> {genResult.model_used}</p>
-          <p className="mb-4"><strong className="text-gray-300">Reason:</strong> {genResult.routing_reason}</p>
-          <div className="bg-gray-800 p-3 rounded whitespace-pre-wrap">
+        <div className="bg-industrial-base border border-industrial-border rounded-sm p-3">
+          <h3 className="text-[10px] font-mono text-emerald-500 uppercase tracking-wider mb-2">Generation Result</h3>
+          <div className="text-[12px] space-y-1 mb-2">
+            <div className="flex gap-2">
+              <span className="text-gray-600 font-mono">Model:</span>
+              <span className="text-white font-mono font-medium">{genResult.model_used}</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="text-gray-600 font-mono">Reason:</span>
+              <span className="text-gray-400">{genResult.routing_reason}</span>
+            </div>
+          </div>
+          <div className="bg-black/30 border border-industrial-border rounded-sm p-3 text-[12px] text-gray-300 whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto">
             {genResult.response}
           </div>
         </div>

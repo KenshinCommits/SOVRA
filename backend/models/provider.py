@@ -37,15 +37,22 @@ class OllamaModelProvider(ModelProvider):
         if kwargs:
             payload["options"] = kwargs
             
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{self.base_url}/api/generate",
-                json=payload,
-                timeout=120.0
-            )
-            response.raise_for_status()
-            data = response.json()
-            return data.get("response", "")
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    f"{self.base_url}/api/generate",
+                    json=payload,
+                    timeout=120.0
+                )
+                response.raise_for_status()
+                data = response.json()
+                return data.get("response", "")
+        except httpx.TimeoutException:
+            raise TimeoutError(f"Model {model_name} timed out after 120s.")
+        except httpx.HTTPStatusError as e:
+            raise RuntimeError(f"Model {model_name} returned error status {e.response.status_code}: {e.response.text}")
+        except Exception as e:
+            raise RuntimeError(f"Model {model_name} inference failed: {str(e) or type(e).__name__}")
 
 # Global singleton
 model_provider = OllamaModelProvider()

@@ -1,12 +1,91 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ── SOVRA Design Tokens (Tailwind v4 @theme) ──────────────── */
+@theme {
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --font-display: "Space Grotesk", sans-serif;
+
+  --color-industrial-base: #050505;
+  --color-industrial-panel: #111111;
+  --color-industrial-surface: #1a1a1a;
+  --color-industrial-border: #333333;
+  --color-industrial-text: #e0e0e0;
+  --color-industrial-muted: #888888;
+  --color-industrial-accent: #d97706;
+  --color-industrial-accent-hover: #b45309;
+  --color-industrial-success: #166534;
+  --color-industrial-success-text: #4ade80;
+  --color-industrial-warning: #854d0e;
+  --color-industrial-warning-text: #facc15;
+  --color-industrial-error: #7f1d1d;
+  --color-industrial-error-text: #f87171;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
 body {
-  background-color: #0f172a;
-  color: #f8fafc;
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: #050505;
+  color: #e0e0e0;
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ── Focus ring ───────────────────────────────────────────── */
+*:focus-visible {
+  outline: 1px solid #d97706;
+  outline-offset: 1px;
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background: rgba(217, 119, 6, 0.3);
+  color: #fff;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes sovra-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.sovra-pulse {
+  animation: sovra-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sovra-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.0; }
+}
+.sovra-blink {
+  animation: sovra-blink 1.2s step-start infinite;
 }

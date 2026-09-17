@@ -1,0 +1,35 @@
+STANDARD OPERATING PROCEDURE: CENTRIFUGAL SLURRY PUMP INSPECTION (SOP-PUMP-402)
+Document ID: SOP-PUMP-402-REV3
+Facility: Industrial Operations Unit 4
+Target Equipment: Centrifugal Slurry Pump P-104A / P-104B
+
+1. OBJECTIVE & SCOPE
+This procedure specifies mandatory inspection intervals, quantitative thresholds, and corrective protocols for heavy-duty centrifugal slurry pumps in continuous service.
+
+2. INSPECTION CHECKLIST & PARAMETERS
+2.1 Vibration Analysis
+- Measure RMS velocity in horizontal, vertical, and axial planes at DE and NDE bearing housings.
+- Acceptable operating limit: RMS velocity <= 4.5 mm/s.
+- Warning alert threshold: 4.6 mm/s to 6.0 mm/s (schedule vibration spectrum analysis).
+- Critical trip limit: > 6.0 mm/s (immediate shutdown and lockout).
+
+2.2 Mechanical Seal & Flushing System
+- Plan 32 external flush water pressure must be maintained at 15 PSI above stuffing box cavity pressure.
+- Maximum allowable seal face leakage: 5 drops per minute.
+- Leakage between 6 and 20 drops per minute indicates early seal ring degradation.
+- Leakage > 20 drops per minute requires immediate isolation and mechanical seal cartridge overhaul.
+
+2.3 Bearing Assembly & Temperatures
+- Normal operating temperature range: 50°C to 72°C.
+- Maximum allowable steady-state temperature: 75°C.
+- High-temperature alarm threshold: 85°C.
+- Safety trip threshold: 95°C.
+- Lubrication schedule: Replenish 25g of ISO VG 220 synthetic polyurea grease every 500 operating hours.
+
+2.4 Impeller Clearance & Casing Wear
+- Suction liner to impeller front shroud clearance nominal specification: 0.8 mm.
+- Maximum permissible clearance before efficiency loss: 1.5 mm.
+- Mandatory replacement threshold: clearance exceeding 2.5 mm requires suction liner and impeller changeout.
+
+3. DISPATCH & DOCUMENTATION REQUIREMENTS
+Any maintenance action, vibration exceedance, or seal cartridge replacement must be formally logged with a generated recommendation report (DOCX) signed off by the Operations Shift Engineer before physical intervention.

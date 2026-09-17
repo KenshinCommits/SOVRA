@@ -60,17 +60,18 @@ Do not return any markdown wrapping, just the raw JSON."""
             cleaned = re.sub(r'```json|```', '', raw_response).strip()
             data = json.loads(cleaned)
             
+            has_code_keywords = bool(re.search(r'(code|script|python|javascript|docx|xlsx|pptx|report|csv|tabular|audit|calculate|sandbox)', prompt.lower()))
             return TaskFingerprint(
                 modality="text",
                 complexity=data.get("complexity", "medium").lower(),
-                requires_code=bool(data.get("requires_code", False)),
+                requires_code=bool(data.get("requires_code", False)) or has_code_keywords,
                 requires_vision=False
             )
         except Exception as e:
             print(f"Router LLM fingerprinting failed: {e}. Falling back to heuristics.")
             # Fallback heuristics
             complexity = "high" if len(prompt) > 500 else "medium"
-            requires_code = bool(re.search(r'(code|script|python|javascript|function|html|css)', prompt.lower()))
+            requires_code = bool(re.search(r'(code|script|python|javascript|docx|xlsx|pptx|report|csv|tabular|audit|calculate|sandbox)', prompt.lower()))
             return TaskFingerprint(
                 modality="text",
                 complexity=complexity,

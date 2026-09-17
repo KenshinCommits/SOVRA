@@ -31,3 +31,8 @@ data/documents/*
 
 # Qdrant local storage
 qdrant_storage/
+# Demo data files
+data/Updated Resume.pdf
+backend/artifacts/*.docx
+backend/artifacts/*.xlsx
+backend/audit/audit_log.jsonl

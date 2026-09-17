@@ -1,6 +1,6 @@
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from .embeddings import EmbeddingProvider
 
 class QdrantService:
@@ -53,12 +53,13 @@ class QdrantService:
             points=points
         )
 
-    def search(self, query: str, limit: int = 5) -> List[Dict[str, Any]]:
+    def search(self, query: str, limit: int = 5, score_threshold: Optional[float] = None) -> List[Dict[str, Any]]:
         query_vector = self.embedding_provider.embed_text(query)
         results = self.client.query_points(
             collection_name=self.collection_name,
             query=query_vector,
             limit=limit,
+            score_threshold=score_threshold,
             with_payload=True
         ).points
         
@@ -69,3 +70,42 @@ class QdrantService:
             }
             for result in results
         ]
+
+    def delete_document(self, document_id: str):
+        from qdrant_client.models import Filter, FieldCondition, MatchValue
+        self.client.delete(
+            collection_name=self.collection_name,
+            points_selector=Filter(
+                must=[
+                    FieldCondition(
+                        key="document_id",
+                        match=MatchValue(value=document_id)
+                    )
+                ]
+            )
+        )
+
+    def get_indexed_documents(self) -> List[Dict[str, Any]]:
+        try:
+            records, _ = self.client.scroll(
+                collection_name=self.collection_name,
+                limit=2000,
+                with_payload=True,
+                with_vectors=False
+            )
+            docs = {}
+            for r in records:
+                p = r.payload or {}
+                doc_id = p.get("document_id")
+                if doc_id:
+                    if doc_id not in docs:
+                        docs[doc_id] = {
+                            "document_id": doc_id,
+                            "filename": p.get("filename", "Unknown"),
+                            "chunks_count": 0
+                        }
+                    docs[doc_id]["chunks_count"] += 1
+            return list(docs.values())
+        except Exception as e:
+            print(f"Error fetching documents from Qdrant: {e}")
+            return []

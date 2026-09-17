@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from .qdrant_service import QdrantService
 from .embeddings import LocalEmbeddingProvider
 import os
@@ -12,12 +12,12 @@ class Retriever:
             embedding_provider=self.embedding_provider
         )
 
-    def retrieve_context(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def retrieve_context(self, query: str, top_k: int = 5, score_threshold: Optional[float] = 0.30) -> List[Dict[str, Any]]:
         """
-        Retrieves top_k context chunks.
+        Retrieves top_k context chunks exceeding score_threshold.
         Returns a list of dicts with score, text, and metadata (filename, page, etc.)
         """
-        results = self.qdrant_service.search(query, limit=top_k)
+        results = self.qdrant_service.search(query, limit=top_k, score_threshold=score_threshold)
         
         formatted_results = []
         for res in results:

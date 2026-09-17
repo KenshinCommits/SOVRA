@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { Search, Loader2 } from 'lucide-react';
 
 export default function SearchTestPanel() {
   const [query, setQuery] = useState('');
@@ -25,14 +26,16 @@ export default function SearchTestPanel() {
   };
 
   return (
-    <div className="bg-industrial-panel p-6 rounded-xl border border-industrial-border shadow-lg mt-6">
-      <h2 className="text-xl font-semibold mb-4 border-b border-industrial-border pb-2">RAG Retrieval Test</h2>
+    <div className="bg-industrial-surface border border-industrial-border rounded-sm p-5">
+      <h2 className="text-sm font-display font-bold text-white uppercase tracking-wide mb-4 pb-2 border-b border-industrial-border">
+        RAG Retrieval Test
+      </h2>
       
       <div className="flex gap-2 mb-4">
         <input 
           type="text" 
-          className="flex-1 bg-industrial-dark border border-industrial-border rounded px-4 py-2 text-industrial-text focus:outline-none focus:border-industrial-accent"
-          placeholder="Search knowledge base..."
+          className="flex-1 bg-industrial-base border border-industrial-border rounded-sm px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:border-industrial-accent transition-colors"
+          placeholder="Search knowledge base…"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -40,33 +43,36 @@ export default function SearchTestPanel() {
         <button 
           onClick={handleSearch}
           disabled={loading}
-          className="bg-industrial-accent text-industrial-dark px-4 py-2 rounded font-semibold hover:bg-blue-400 disabled:opacity-50"
+          className="flex items-center gap-1.5 bg-industrial-accent hover:bg-industrial-accent-hover text-black px-3 py-2 rounded-sm text-xs font-mono font-bold uppercase disabled:opacity-50 transition-colors"
         >
-          {loading ? 'Searching...' : 'Search'}
+          {loading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Search className="w-3 h-3" />}
+          Search
         </button>
       </div>
 
-      {error && <div className="text-industrial-error mb-4">{error}</div>}
+      {error && <div className="text-xs text-red-400 mb-3 font-mono">{error}</div>}
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {results.map((res, i) => (
-          <div key={i} className="bg-industrial-dark p-4 rounded border border-industrial-border">
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-xs font-bold text-industrial-accent bg-blue-900/30 px-2 py-1 rounded">
+          <div key={i} className="bg-industrial-base border border-industrial-border rounded-sm p-3">
+            <div className="flex justify-between items-start mb-1.5">
+              <span className="text-[11px] font-mono text-industrial-accent font-medium">
                 {res.filename}
               </span>
-              <span className="text-xs text-gray-500 font-mono">Score: {res.score.toFixed(3)}</span>
+              <span className="text-[10px] text-gray-600 font-mono">
+                score: {res.score.toFixed(3)}
+              </span>
             </div>
-            <div className="text-xs text-gray-400 flex gap-4 mb-2">
-              {res.page !== null && <span>Page: {res.page}</span>}
-              {res.section && <span>Section: {res.section}</span>}
-              <span>Chunk ID: {res.chunk_index}</span>
+            <div className="text-[10px] text-gray-600 font-mono flex gap-3 mb-1.5">
+              {res.page !== null && <span>pg {res.page}</span>}
+              {res.section && <span>§ {res.section}</span>}
+              <span>chunk #{res.chunk_index}</span>
             </div>
-            <p className="text-sm text-gray-300">{res.text}</p>
+            <p className="text-[12px] text-gray-400 leading-relaxed">{res.text}</p>
           </div>
         ))}
         {!loading && results.length === 0 && query && !error && (
-          <div className="text-gray-500 text-sm">No results found.</div>
+          <div className="text-gray-600 text-xs font-mono py-4 text-center">No results.</div>
         )}
       </div>
     </div>

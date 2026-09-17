@@ -6,16 +6,27 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"IBM Plex Sans"', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
+        display: ['"Space Grotesk"', 'sans-serif'],
+      },
       colors: {
         industrial: {
-          dark: '#0f172a',
-          panel: '#1e293b',
-          border: '#334155',
-          text: '#f8fafc',
-          accent: '#38bdf8',
-          success: '#22c55e',
-          warning: '#eab308',
-          error: '#ef4444'
+          base: '#050505',
+          panel: '#111111',
+          surface: '#1a1a1a',
+          border: '#333333',
+          text: '#e0e0e0',
+          muted: '#888888',
+          accent: '#d97706', // Restrained amber
+          accentHover: '#b45309',
+          success: '#166534',
+          successText: '#4ade80',
+          warning: '#854d0e',
+          warningText: '#facc15',
+          error: '#7f1d1d',
+          errorText: '#f87171'
         }
       }
     },
